@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 LABEL DOT container
 
-RUN apt-get update && apt-get install -y openssl python3
+RUN apt-get update && apt-get install -y openssl ca-certificates python3
 
 WORKDIR /usr/bin/
 COPY dot-proxy.py /usr/bin/dot-proxy.py
