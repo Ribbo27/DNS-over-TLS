@@ -27,9 +27,9 @@ Get the IP of your running container(usually `172.17.0.2` on **linux** machines)
 
 `sudo docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' dot-proxy-container`
 
-Then test the DNS proxy with the `dig` cmd:
+Then test the DNS proxy with the `dig` cmd (of course you can also use `kdig`, `nslookup`, `wireshark` or whatever tool you prefer :) ):
 
-`dig n26.com +tcp -d @172.17.0.2 -p 5300 -t A`
+`dig n26.com +tcp -d @172.17.0.2 -t A`
 
 ### Questions
 
