@@ -31,6 +31,18 @@ Then test the DNS proxy with the `dig` cmd:
 
 `dig n26.com +tcp -d @172.17.0.2 -p 5300 -t A`
 
+### Questions
+
+- Imagine this proxy being deployed in an infrastructure. What would be the security concerns you would raise?
+  If the proxy is accessible from the external network, the proxy is subject to several types of attacks, like DDOS attacks, man in the middle, etc.
+  If, on the other hand, it is only accessible from the local network, the biggest concern is the fact that the connection between the client and the proxy is not encrypted.
+
+- How would you integrate that solution in a distributed, microservices-oriented and containerized architecture?
+  This proxy can be easily integrated in an architecture like the one mentioned in the question due to its design.
+  There are different solutions to integrate it, the one I would use would be to set up load balancers in front of it to balance the load and allow to scale the service horizontally by adding more instances of it.
+
+- What other improvements do you think would be interesting to add to the project?
+  A simple but useful improvement would be to create a cache for the most frequent queries to speed up response times.
 
 ### References
 
