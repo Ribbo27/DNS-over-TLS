@@ -1,5 +1,9 @@
 import socket
 import ssl
+import logging
+
+
+logging.basicConfig(filename='/var/log/dot-proxy.log', level=logging.DEBUG)
 
 class TCPProxy:
 
@@ -24,12 +28,12 @@ class TCPProxy:
     context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
     context.verify_mode = ssl.CERT_REQUIRED
     context.load_verify_locations('/etc/ssl/certs/ca-certificates.crt')
+
     encrypt_socket = context.wrap_socket(sock, server_hostname=self.DNS_PROVIDER_IP)
     encrypt_socket.connect((self.DNS_PROVIDER_IP, self.DNS_PROVIDER_PORT))
-
     encrypt_socket.send(query)
+
     dns_results = encrypt_socket.recv(self.TCP_BUFFER_SIZE)
-    print(dns_results)
     return dns_results
 
   def dot_handler(self, conn, data):
@@ -39,11 +43,13 @@ class TCPProxy:
       conn (socket.socket): TCP connection
       data (bytes):         DNS query
     """
+    logging.info('Incoming TCP connection from: ', conn.getpeername())
     response = self.dns_query(data)
     if response:
       conn.sendto(response, conn.getpeername())
+      logging.info('DNS results sent back to {}'.format(conn.getpeername()))
     else:
-      print('DNS is not valid: \n', data)
+      logging.error('DNS query is not valid: \n', data)
 
   def main(self):
     """Create the TCP server"""
@@ -52,7 +58,7 @@ class TCPProxy:
       with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((self.LISTENING_IP, self.LISTENING_PORT))
         s.listen()
-        print('TCP server is listening on port', self.LISTENING_PORT)
+        logging.info('TCP server is listening on port', self.LISTENING_PORT)
         while True:
           conn= s.accept()[0]
           data = conn.recv(self.TCP_BUFFER_SIZE)
@@ -61,7 +67,7 @@ class TCPProxy:
             break
           self.dot_handler(conn, data)
     except Exception as e:
-      print(e)
+      logging.error(e)
       conn.close()
 
 
