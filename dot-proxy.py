@@ -1,7 +1,7 @@
 import socket
 import ssl
 import logging
-
+from multiprocessing import Process
 
 logging.basicConfig(filename='/var/log/dot-proxy.log', level=logging.DEBUG)
 
@@ -65,7 +65,8 @@ class TCPProxy:
 
           if not data:
             break
-          self.dot_handler(conn, data)
+          p = Process(target=self.dot_handler, args=(conn, data))
+          p.start()
     except Exception as e:
       logging.error(e)
       conn.close()
