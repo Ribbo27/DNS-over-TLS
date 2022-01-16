@@ -40,7 +40,7 @@ Then test the DNS proxy with the `dig` cmd (of course you can also use `kdig`, `
 
 Multiple incoming requests handling was also tested, some results:
 
-![Testing multiple incoming requests](/home/ribbo/Pictures/test_concurrency.png)
+![Testing multiple incoming requests](https://user-images.githubusercontent.com/35638854/149642575-a74d885b-c1b9-4964-b686-dad3b2158b28.png)
 
 ### How to access the container
 
