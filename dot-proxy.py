@@ -25,7 +25,7 @@ class TCPProxy:
     """
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS)
     context.verify_mode = ssl.CERT_REQUIRED
     context.load_verify_locations('/etc/ssl/certs/ca-certificates.crt')
 
@@ -36,7 +36,7 @@ class TCPProxy:
     dns_results = encrypt_socket.recv(self.TCP_BUFFER_SIZE)
     return dns_results
 
-  def dot_handler(self, conn, data):
+  def tcp_handler(self, conn, data):
     """TO-DO
     
     Parameters:
@@ -65,7 +65,7 @@ class TCPProxy:
 
           if not data:
             break
-          p = Process(target=self.dot_handler, args=(conn, data))
+          p = Process(target=self.tcp_handler, args=(conn, data))
           p.start()
     except Exception as e:
       logging.error(e)
