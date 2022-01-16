@@ -7,6 +7,11 @@ DNS-over-TLS proxy that can:
 1. Handle at least one DNS query, and give a result to the client.
 2. Work over TCP and talk to a DNS-over-TLS server that works over TCP (e.g: Cloudflare).
 
+Bonus features:
+- [x] Allow multiple incoming requests at the same time
+- [ ] Also handle UDP requests, while still querying tcp on the other side
+- [ ] Any other improvements you can think of!
+
 ## Solution explanation
 
 This simple proxy is set by default to send DNS queries to Cloudflare.
@@ -52,9 +57,6 @@ To access the container, just run:
 
 - Imagine this proxy being deployed in an infrastructure. What would be the security concerns you would raise?
   Suppose that the proxy is accessible only from the local network, someone who has access to it could leverage the fact that client-proxy connection is not encrypted. This expose the service to a man in the middle attack.
-
-  If the proxy is accessible from the external network, the proxy is subject to several types of attacks, like DDOS attacks, man in the middle, etc.
-  If, on the other hand, it is only accessible from the local network, the biggest concern is the fact that the connection between the client and the proxy is not encrypted.
 
 - How would you integrate that solution in a distributed, microservices-oriented and containerized architecture?
   This proxy can be integrated in an architecture like the one mentioned in the question due to its design.
